@@ -3,12 +3,25 @@ var cors = require('cors')
 var app = express();
 app.use(express.json());
 app.use(cors())
+var fs = require('fs');
 
-app.use('/pallet/game', async (req, res) => {
-    
-})
+makeupListArray = []
 
 app.use('/pallet/list', async (req, res) => {
+
+    fs.readFile( __dirname + '/assets/makeupList.txt', function (err, data) {
+        if (err) {
+          throw err; 
+        }
+        makeupListArray = data.toString().split("\n");
+        makeupListArray = makeupListArray.map((item) => {
+            return item.replace(/(\r\n|\n|\r)/gm, "");
+        })
+
+      });
+
+      // send response as json 
+    res.json(makeupListArray);
     
 })
 
