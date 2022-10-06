@@ -1,18 +1,21 @@
 <template>
-  <div>
-    <SimpleTypeahead
-      id="typeahead_id"
-      placeholder="Start writing..."
-      :items="this.searchList"
-      :minInputLength="1"
-      :itemProjection="itemProjectionFunction"
-      @selectItem="selectItemEventHandler"
-      @onInput="onInputEventHandler"
-      @onFocus="onFocusEventHandler"
-      @onBlur="onBlurEventHandler"
-    >
-    </SimpleTypeahead
-    >>
+  <div class="flex justify-center">
+    <div class="flex justify-center w-full p-4">
+      <SimpleTypeahead
+        class="w-full px-4 py-4 rounded-l-lg"
+        id="typeahead_id"
+        placeholder="Search for a makeup palette or click submit to skip..."
+        :items="this.searchList"
+        :minInputLength="1"
+        :itemProjection="itemProjectionFunction"
+        @selectItem="selectItemEventHandler"
+        @onInput="onInputEventHandler"
+        @onFocus="onFocusEventHandler"
+        @onBlur="onBlurEventHandler"
+      >
+      </SimpleTypeahead>
+      <button class="flex justify-center bg-green-400 rounded-r-lg px-8 py-4">Submit</button>
+    </div>
   </div>
 </template>
 
@@ -26,6 +29,7 @@ export default {
   data() {
     return {
       searchList: [],
+      selectedItem: ""
     };
   },
   props: {
@@ -34,10 +38,16 @@ export default {
   components: {
     SimpleTypeahead,
   },
-  async mounted(){
-    //use axios to get the searchList and convert to json to array 
+  async mounted() {
+    //use axios to get the searchList and convert to json to array
     const response = await axios.get("http://localhost:22887/pallet/list");
     this.searchList = response.data;
   },
+  methods: {
+    selectItemEventHandler(item) {
+      this.selectedItem = item;
+      this.$emit('newSelectedItem',this.selectedItem);
+    },
+  }
 };
 </script>

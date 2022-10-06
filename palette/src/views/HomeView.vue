@@ -4,8 +4,7 @@
     <homeBar></homeBar>
     <imageDisplay></imageDisplay> 
     <frameDisplay></frameDisplay>
-    <searchBar></searchBar>
-    
+    <searchBar @newSelectedItem="(event) => this.selectedItem = event"></searchBar>
   </div>
 </div>
 </template>
@@ -19,11 +18,22 @@ import searchBar from '@/components/searchBar';
 
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      selectedItem: ""
+    }
+  },
   components: {
     homeBar,
     imageDisplay,
     frameDisplay,
     searchBar
+  },
+  async mounted() {
+    //use axios to get the searchList and convert to json to array
+
+  },
+  methods: {
   }
 }
 </script>
