@@ -1,4 +1,5 @@
 <template>
+  <button @click="this.$refs.clearInput">test</button>
   <div class="flex justify-center">
     <div class="flex justify-center w-full p-4">
       <SimpleTypeahead
@@ -14,7 +15,7 @@
         @onBlur="onBlurEventHandler"
       >
       </SimpleTypeahead>
-      <button class="flex justify-center bg-green-400 rounded-r-lg px-8 py-4">Submit</button>
+      <button @click="fireEvent" class="flex justify-center bg-green-400 rounded-r-lg px-8 py-4">Submit</button>
     </div>
   </div>
 </template>
@@ -46,8 +47,10 @@ export default {
   methods: {
     selectItemEventHandler(item) {
       this.selectedItem = item;
-      this.$emit('newSelectedItem',this.selectedItem);
     },
+    fireEvent(){
+      this.$emit('newSelectedItem',this.selectedItem);
+    }
   }
 };
 </script>
