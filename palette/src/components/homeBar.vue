@@ -13,10 +13,14 @@
 </template>
 
 <script>
+//import modalDisplay from "@/components/modalDisplay.vue";
 export default {
   name: "homeBar",
   props: {
     msg: String,
+  },
+  components: {
+    //modalDisplay,
   },
 };
 </script>

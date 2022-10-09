@@ -1,9 +1,10 @@
 <template>
   <div class="flex justify-center gap-2 mt-1 mb-2 text-black">
-    <button
+    <button 
       v-for="frame in frameNumber"
       :key="frame"
-      class="bg-fuchsia-500 px-2 py-1 sm:text-4xl rounded px-3 py-2"
+      class="bg-fuchsia-500 px-2 py-1 sm:text-4xl rounded px-3 py-2 hover:bg-fuchsia-600"
+      @click="frameClick(frame)"
     >
       {{ frame }}
     </button>
@@ -13,8 +14,17 @@
 <script>
 export default {
   name: "frameDisplay",
+  data () {
+    return {
+    }
+  },
   props: {
     frameNumber: String,
   },
+  methods : {
+    frameClickHandler(frame){
+      this.$emit('frameClick',frame);
+    }
+  }
 };
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <button @click="this.$refs.clearInput">test</button>
   <div class="flex justify-center">
     <div class="flex justify-center w-full p-4">
       <SimpleTypeahead
+        ref="refSimpleTypeahead"
         class="w-full px-4 py-4 rounded-l-lg"
         id="typeahead_id"
         placeholder="Search for a makeup palette or click submit to skip..."
@@ -50,6 +50,7 @@ export default {
     },
     fireEvent(){
       this.$emit('newSelectedItem',this.selectedItem);
+      this.$refs.refSimpleTypeahead.input = ""
     }
   }
 };
