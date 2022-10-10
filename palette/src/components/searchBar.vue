@@ -3,7 +3,7 @@
     <div class="flex justify-center w-full p-4">
       <SimpleTypeahead
         ref="refSimpleTypeahead"
-        class="w-full px-4 py-4 rounded-l-lg"
+        class="w-full px-4 py-4 rounded-l-lg z-0"
         id="typeahead_id"
         placeholder="Search for a makeup palette or click submit to skip..."
         :items="this.searchList"

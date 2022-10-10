@@ -1,13 +1,13 @@
 <template>
   <div
     v-if="guessArray.length"
-    class="flex-col justify-center m-4 text-black"
+    class="flex-col justify-center mx-4 text-black"
   >
     <div class="flex flex-col justify-center">
       <div 
         v-for="guess in guessArray"
         :key="guess"
-        class="py-3 w-full border-2 border-black rounded-lg text-black m-1"
+        class="flex justify-center py-3 w-full border-2 border-black rounded-lg text-black"
         @click="guessClick(guess)"
       >
         {{ guess }}
