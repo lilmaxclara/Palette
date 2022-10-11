@@ -1,6 +1,6 @@
 <template>
-    <div class="fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-black opacity-80">
-        <div class="w-full h-full flex justify-center items-center">
+    <div v-if="this.showModal" class="fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-black opacity-80">
+        <div @click="closeModal()" class="w-full h-full flex justify-center items-center">
           <div class="p-10 rounded-lg bg-white border-2 border-blue-200">
             <div>Hello</div>
             <div>This is a modal</div>
@@ -12,9 +12,16 @@
     <script>
     export default {
       name: "modalDisplay",
-      props: {
-        imageURL: Number,
+      data () {
+        return {
+          showModal: true,
+        }
       },
+      methods : {
+        closeModal(){
+          this.$emit('closeModal');
+        }
+      }
     };
     </script>
     

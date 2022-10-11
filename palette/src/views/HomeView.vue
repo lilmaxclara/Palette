@@ -53,7 +53,7 @@ export default {
 
     //calculate current game by taking a base date and adding the number of days since that date
     //this will be used to calculate the current game
-    const baseDate = new Date("2022-10-10");
+    const baseDate = new Date("2022-10-11");
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate - baseDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

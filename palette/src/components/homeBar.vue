@@ -10,9 +10,9 @@
       <svg @click="this.ToggleModal3=true" xmlns="http://www.w3.org/2000/svg" class="mt-4 w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
     </div>
   </header>
-  <modalDisplay v-if="ToggleModal1"></modalDisplay>
-  <modalDisplay v-if="ToggleModal2"></modalDisplay>
-  <modalDisplay v-if="ToggleModal3"></modalDisplay>
+  <modalDisplay v-if="ToggleModal1" @closeModal="this.ToggleModal1 = false"></modalDisplay>
+  <modalDisplay v-if="ToggleModal2" @closeModal="this.ToggleModal2 = false"></modalDisplay>
+  <modalDisplay v-if="ToggleModal3" @closeModal="this.ToggleModal3 = false"></modalDisplay>
 </template>
 
 <script>
@@ -31,6 +31,11 @@ export default {
   },
   components: {
     modalDisplay,
+  },
+  methods: {
+    closeModal(){
+
+    }
   },
 };
 </script>
