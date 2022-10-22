@@ -23,12 +23,9 @@
             <div
               v-for="guess in guessArray"
               :key="guess"
-              class="p-4 rounded-lg bg-red-500"
-              :class="{
-                'bg-green-500': guess === guessArray[guessArray.length - 1],
-              }"
-              
-            >Use a computed class here to switch between yes no and unknown guesses</div>
+              class="p-4 rounded-lg"
+              :class="determineColour(guess)"
+            ></div>
           </div>
           <div>
             <button
@@ -95,17 +92,16 @@ export default {
     VueCountdown,
   },
   async mounted() {
-    //use axios to get the searchList and convert to json to array
-
     //calculate current game by taking a base date and adding the number of days since that date
     //this will be used to calculate the current game
-    const baseDate = new Date("2022-10-20");
+    const baseDate = new Date("2022-10-23");
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate - baseDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     this.currentGameNumber = diffDays;
     console.log(this.currentGameNumber);
 
+    //use axios to get the searchList and convert to json to array
     try {
       const response = await axios.get(
         "http://localhost:22887/games/" + this.currentGameNumber + "/result.txt"
@@ -124,16 +120,22 @@ export default {
       this.currentFrame +
       ".png";
   },
+
   methods: {
     checkGuess(event) {
       this.selectedItem = event;
       if (this.selectedItem == this.gameWinningGuess) {
         this.gameWonStatus = true;
-        this.guessArray.push("✔️ " + event);
+        this.guessArray.push({guessResult:true, guess:"✔️ "+ event});
+        this.guessArray.length = 6
       } else {
         this.gameWonStatus = false;
-        this.guessArray.push("❌ " + event);
+        this.guessArray.push({guessResult:false, guess:"❌ "+ event}); 
         this.currentFrame++;
+        //if current frame would be 8 then game is over
+        if (this.currentFrame == 7) {
+          //code endgame
+        }
         this.currentImageURL =
           "http://localhost:22887/games/" +
           this.currentGameNumber +
@@ -171,6 +173,19 @@ export default {
 
       return formattedProps;
     },
+    determineColour(guess){
+
+      try {
+        if (guess.guessResult) {
+          return "bg-green-500"
+        }
+        else{
+          return "bg-red-500"
+        }
+      } catch (error) {
+          return "bg-gray-500"
+      }
+    }
   },
 };
 </script>
