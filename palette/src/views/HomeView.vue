@@ -7,15 +7,16 @@
         @frameClick="changeFrame($event)"
         :frameNumber="this.currentFrame"
       ></frameDisplay>
-      <div v-if="!this.gameWonStatus">
+      <div v-if="!this.gameOverStatus">
         <searchBar @newSelectedItem="checkGuess($event)"></searchBar>
       </div>
-      <div v-if="!this.gameWonStatus || this.showGuess">
+      <div v-if="!this.gameOverStatus || this.showGuess">
         <guessDisplay :guessArray="this.guessArray"></guessDisplay>
       </div>
-      <div v-if="this.gameWonStatus">
+      <div v-if="this.gameOverStatus">
         <div class="bg-fuchsia-200 rounded-lg m-4 p-2">
-          <div class="text-4xl text-green-500 pb-2">You won!</div>
+          <div v-if="this.gameWonStatus" class="text-4xl text-green-500 pb-2">You won!</div>
+          <div v-else class="text-4xl text-red-500 pb-2">You lost</div>
           <div class="text-3xl p-2">
             <a :href="this.makeupURL">{{ this.gameWinningGuess }}</a>
           </div>
@@ -29,6 +30,7 @@
           </div>
           <div>
             <button
+              @click="share()"
               class="py-3 px-4 bg-green-500 rounded-lg text-white font-bold m-2"
             >
               SHARE
@@ -80,6 +82,7 @@ export default {
       showGuess: false,
       guessArray: [],
       gameWinningGuess: "",
+      gameOverStatus: false,
       gameWonStatus: false,
     };
   },
@@ -126,16 +129,22 @@ export default {
       this.selectedItem = event;
       if (this.selectedItem == this.gameWinningGuess) {
         this.gameWonStatus = true;
+        this.gameOverStatus = true;
         this.guessArray.push({guessResult:true, guess:"✔️ "+ event});
         this.guessArray.length = 6
       } else {
-        this.gameWonStatus = false;
-        this.guessArray.push({guessResult:false, guess:"❌ "+ event}); 
-        this.currentFrame++;
-        //if current frame would be 8 then game is over
-        if (this.currentFrame == 7) {
-          //code endgame
+
+        if (event == "") {
+          this.guessArray.push({guessResult:false, guess:"❌ Skipped"}); 
+        } else {
+          this.guessArray.push({guessResult:false, guess:"❌ "+ event}); 
         }
+
+        if (this.currentFrame == 6) {
+          this.gameOverStatus = true;
+          return
+        }
+        this.currentFrame++;
         this.currentImageURL =
           "http://localhost:22887/games/" +
           this.currentGameNumber +
@@ -153,7 +162,27 @@ export default {
         event +
         ".png";
     },
-    share() {},
+    share() {
+      var shareString = ""
+      for (var i = 0; i < this.guessArray.length; i++) {
+        try {
+
+        if (this.guessArray[i].guessResult) {
+          shareString += "🟩"
+        }
+        else{
+          shareString += "🟥"
+        }
+          
+        } catch (error) {
+          shareString += "⬛"
+        }
+
+      }
+      var clipboardText = "Palette #"+this.currentGameNumber+"\n"+"💅"+shareString+"\n"+"https://palette.wtf"
+      console.log(clipboardText)
+      navigator.clipboard.writeText(clipboardText);
+    },
     endOfDay() {
       //calculate minutes hours and seconds before the end of the day
     const currentDate = new Date();

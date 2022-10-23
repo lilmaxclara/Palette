@@ -1,14 +1,18 @@
 <template>
-  <header class="flex items-center justify-between mx-4 mt-2 text-grey">
+  <header class="flex items-center justify-between mt-2 text-grey">
     <div class="flex items-center gap-2 mt-3">
       <a href="."
-        ><img class="rounded-md" src="@/assets/PaletteLogo.webp" alt=""
+        ><img
+          class="rounded-md hover:cursor-pointer"
+          src="@/assets/PaletteLogo.webp"
+          alt=""
       /></a>
     </div>
     <div class="flex items-center gap-2 text-4xl">
       <svg
+        @click="$router.push('history')"
         xmlns="http://www.w3.org/2000/svg"
-        class="mt-4 w-10 h-10"
+        class="mt-4 w-10 h-10 hover:cursor-pointer"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -23,7 +27,7 @@
       <svg
         @click="this.ToggleModal1 = true"
         xmlns="http://www.w3.org/2000/svg"
-        class="mt-4 w-10 h-10"
+        class="mt-4 w-10 h-10 hover:cursor-pointer"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -38,7 +42,7 @@
       <svg
         @click="this.ToggleModal2 = true"
         xmlns="http://www.w3.org/2000/svg"
-        class="mt-4 w-10 h-10"
+        class="mt-4 w-10 h-10 hover:cursor-pointer"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -53,10 +57,17 @@
     </div>
   </header>
   <modalDisplay
+    id="Stats"
     v-if="ToggleModal1"
     @closeModal="this.ToggleModal1 = false"
-  ></modalDisplay>
-  <modalDisplay v-if="ToggleModal2" @closeModal="this.ToggleModal2 = false">
+  >
+  
+  </modalDisplay>
+  <modalDisplay
+    id="Info"
+    v-if="ToggleModal2"
+    @closeModal="this.ToggleModal2 = false"
+  >
     <div class="flex justify-start pb-4 text-4xl font-bold">Instructions</div>
     <ul class="list-disc">
       <li>
@@ -84,11 +95,13 @@
         Follow me on Twitter, and if you like the game, tweet about it!
       </div>
       <div class="flex justify-center h-fit">
-        <a href="https://twitter.com"><button
-          class="flex justify center p-4 rounded-xl w-fit text-white font-bold bg-blue-400 whitespace-nowrap"
-        >Twitter 🐦
-        </button></a>
-        
+        <a href="https://twitter.com"
+          ><button
+            class="flex justify center p-4 rounded-xl w-fit text-white font-bold bg-blue-400 whitespace-nowrap"
+          >
+            Twitter 🐦
+          </button></a
+        >
       </div>
     </div>
   </modalDisplay>
