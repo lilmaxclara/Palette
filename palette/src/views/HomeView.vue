@@ -15,7 +15,9 @@
       </div>
       <div v-if="this.gameOverStatus">
         <div class="bg-fuchsia-200 rounded-lg m-4 p-2">
-          <div v-if="this.gameWonStatus" class="text-4xl text-green-500 pb-2">You won!</div>
+          <div v-if="this.gameWonStatus" class="text-4xl text-green-500 pb-2">
+            You won!
+          </div>
           <div v-else class="text-4xl text-red-500 pb-2">You lost</div>
           <div class="text-3xl p-2">
             <a :href="this.makeupURL">{{ this.gameWinningGuess }}</a>
@@ -31,9 +33,9 @@
           <div>
             <button
               @click="share()"
-              class="py-3 px-4 bg-green-500 rounded-lg text-white font-bold m-2 hover:bg-green-600"
+              class="py-3 px-4 bg-green-500 rounded-lg text-white font-bold m-2 hover:bg-green-600 active:translate-y-1"
             >
-              SHARE
+              {{ this.shareButtonText }}
             </button>
           </div>
           <div>
@@ -46,8 +48,10 @@
           </div>
           <div class="flex flex-col justify-center p-2">
             <div class="text-2xl">Next Palette:</div>
-            <VueCountdown class="font-bold text-xl"
-              :time=this.endOfDay() :transform="transformSlotProps" 
+            <VueCountdown
+              class="font-bold text-xl"
+              :time="this.endOfDay()"
+              :transform="transformSlotProps"
               v-slot="{ hours, minutes, seconds }"
             >
               {{ hours }}:{{ minutes }}:{{ seconds }}
@@ -79,6 +83,7 @@ export default {
       currentImageURL: "",
       currentFrame: 1,
       makeupURL: "",
+      shareButtonText: "SHARE",
       showGuess: false,
       guessArray: [],
       gameWinningGuess: "",
@@ -100,13 +105,12 @@ export default {
 
     if (this.$route.query.game) {
       this.currentGameNumber = this.$route.query.game;
-    }
-    else{
-        const baseDate = new Date("2022-10-24");
-        const currentDate = new Date();
-        const diffTime = Math.abs(currentDate - baseDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        this.currentGameNumber = diffDays;
+    } else {
+      const baseDate = new Date("2022-10-24");
+      const currentDate = new Date();
+      const diffTime = Math.abs(currentDate - baseDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      this.currentGameNumber = diffDays;
     }
 
     //use axios to get the searchList and convert to json to array
@@ -135,19 +139,18 @@ export default {
       if (this.selectedItem == this.gameWinningGuess) {
         this.gameWonStatus = true;
         this.gameOverStatus = true;
-        this.guessArray.push({guessResult:true, guess:"✔️ "+ event});
-        this.guessArray.length = 6
+        this.guessArray.push({ guessResult: true, guess: "✔️ " + event });
+        this.guessArray.length = 6;
       } else {
-
         if (event == "") {
-          this.guessArray.push({guessResult:false, guess:"❌ Skipped"}); 
+          this.guessArray.push({ guessResult: false, guess: "❌ Skipped" });
         } else {
-          this.guessArray.push({guessResult:false, guess:"❌ "+ event}); 
+          this.guessArray.push({ guessResult: false, guess: "❌ " + event });
         }
 
         if (this.currentFrame == 6) {
           this.gameOverStatus = true;
-          return
+          return;
         }
         this.currentFrame++;
         this.currentImageURL =
@@ -168,34 +171,38 @@ export default {
         ".png";
     },
     share() {
-      var shareString = ""
+      this.shareButtonText = "COPIED"
+      var shareString = "";
       for (var i = 0; i < this.guessArray.length; i++) {
         try {
-
-        if (this.guessArray[i].guessResult) {
-          shareString += "🟩"
-        }
-        else{
-          shareString += "🟥"
-        }
-          
+          if (this.guessArray[i].guessResult) {
+            shareString += "🟩";
+          } else {
+            shareString += "🟥";
+          }
         } catch (error) {
-          shareString += "⬛"
+          shareString += "⬛";
         }
-
       }
-      var clipboardText = "Palette #"+this.currentGameNumber+"\n"+"💅"+shareString+"\n"+"https://palette.wtf"
-      console.log(clipboardText)
+      var clipboardText =
+        "Palette #" +
+        this.currentGameNumber +
+        "\n" +
+        "💅" +
+        shareString +
+        "\n" +
+        "https://palette.wtf";
+      console.log(clipboardText);
       navigator.clipboard.writeText(clipboardText);
     },
     endOfDay() {
       //calculate minutes hours and seconds before the end of the day
-    const currentDate = new Date();
-    const tomorrow = new Date(currentDate)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    tomorrow.setHours(0,0,0,0)
-    const diffTime = Math.abs(currentDate - tomorrow);
-    return diffTime
+      const currentDate = new Date();
+      const tomorrow = new Date(currentDate);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      const diffTime = Math.abs(currentDate - tomorrow);
+      return diffTime;
     },
     transformSlotProps(props) {
       //Add leading zeros to the time
@@ -207,19 +214,17 @@ export default {
 
       return formattedProps;
     },
-    determineColour(guess){
-
+    determineColour(guess) {
       try {
         if (guess.guessResult) {
-          return "bg-green-500"
-        }
-        else{
-          return "bg-red-500"
+          return "bg-green-500";
+        } else {
+          return "bg-red-500";
         }
       } catch (error) {
-          return "bg-gray-500"
+        return "bg-gray-500";
       }
-    }
+    },
   },
 };
 </script>

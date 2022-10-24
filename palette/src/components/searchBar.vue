@@ -13,6 +13,7 @@
         @onInput="onInputEventHandler"
         @onFocus="onFocusEventHandler"
         @onBlur="onBlurEventHandler"
+        @keydown.enter="fireEvent"
       >
       </SimpleTypeahead>
       <button @click="fireEvent" class="flex justify-center bg-green-400 rounded-r-lg px-8 py-4">Submit</button>
