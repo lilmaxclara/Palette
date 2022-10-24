@@ -31,7 +31,7 @@
           <div>
             <button
               @click="share()"
-              class="py-3 px-4 bg-green-500 rounded-lg text-white font-bold m-2"
+              class="py-3 px-4 bg-green-500 rounded-lg text-white font-bold m-2 hover:bg-green-600"
             >
               SHARE
             </button>
@@ -97,12 +97,17 @@ export default {
   async mounted() {
     //calculate current game by taking a base date and adding the number of days since that date
     //this will be used to calculate the current game
-    const baseDate = new Date("2022-10-23");
-    const currentDate = new Date();
-    const diffTime = Math.abs(currentDate - baseDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    this.currentGameNumber = diffDays;
-    console.log(this.currentGameNumber);
+
+    if (this.$route.query.game) {
+      this.currentGameNumber = this.$route.query.game;
+    }
+    else{
+        const baseDate = new Date("2022-10-24");
+        const currentDate = new Date();
+        const diffTime = Math.abs(currentDate - baseDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        this.currentGameNumber = diffDays;
+    }
 
     //use axios to get the searchList and convert to json to array
     try {

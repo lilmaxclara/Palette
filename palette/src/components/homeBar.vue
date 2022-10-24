@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center justify-between mt-2 text-grey">
+  <header class="flex items-center justify-between mt-2 mx-4 text-grey">
     <div class="flex items-center gap-2 mt-3">
       <a href="."
         ><img
