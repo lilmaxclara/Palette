@@ -5,7 +5,7 @@
         ref="refSimpleTypeahead"
         class="w-full px-4 py-4 rounded-l-lg z-0"
         id="typeahead_id"
-        placeholder="Search for a makeup palette or click submit to skip..."
+        placeholder="Search makeup palettes"
         :items="this.searchList"
         :minInputLength="1"
         :itemProjection="itemProjectionFunction"
@@ -52,6 +52,7 @@ export default {
     fireEvent(){
       this.$emit('newSelectedItem',this.selectedItem);
       this.$refs.refSimpleTypeahead.input = ""
+      this.selectedItem = ""
     }
   }
 };

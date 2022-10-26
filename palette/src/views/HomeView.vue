@@ -102,15 +102,19 @@ export default {
   async mounted() {
     //calculate current game by taking a base date and adding the number of days since that date
     //this will be used to calculate the current game
-
+    if (!this.$route.query.game && localStorage.getItem("currentFrame") && this.getGameNumber() == JSON.parse(localStorage.getItem("lastGameNumber"))) {
+        //load values from localStorage     
+        this.currentFrame = JSON.parse(localStorage.getItem("currentFrame"));
+        this.guessArray = JSON.parse(localStorage.getItem("guessArray"));
+        this.gameOverStatus = JSON.parse(localStorage.getItem("gameOverStatus"));
+        this.gameWonStatus = JSON.parse(localStorage.getItem("gameWonStatus"));
+      }
+    
     if (this.$route.query.game) {
       this.currentGameNumber = this.$route.query.game;
     } else {
-      const baseDate = new Date("2022-10-24");
-      const currentDate = new Date();
-      const diffTime = Math.abs(currentDate - baseDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      this.currentGameNumber = diffDays;
+      this.currentGameNumber = this.getGameNumber()
+      localStorage.setItem("lastGameNumber", JSON.stringify(this.currentGameNumber));
     }
 
     //use axios to get the searchList and convert to json to array
@@ -135,12 +139,19 @@ export default {
 
   methods: {
     checkGuess(event) {
+      // update localStorage
+
       this.selectedItem = event;
       if (this.selectedItem == this.gameWinningGuess) {
         this.gameWonStatus = true;
         this.gameOverStatus = true;
         this.guessArray.push({ guessResult: true, guess: "✔️ " + event });
         this.guessArray.length = 6;
+        if (!this.$route.query.game) {
+            localStorage.setItem("gameWonStatus", JSON.stringify(this.gameWonStatus));
+            localStorage.setItem("gameOverStatus", JSON.stringify(this.gameOverStatus));
+            localStorage.setItem("guessArray", JSON.stringify(this.guessArray));
+          } 
       } else {
         if (event == "") {
           this.guessArray.push({ guessResult: false, guess: "❌ Skipped" });
@@ -148,8 +159,15 @@ export default {
           this.guessArray.push({ guessResult: false, guess: "❌ " + event });
         }
 
+        if (!this.$route.query.game) {
+          localStorage.setItem("guessArray", JSON.stringify(this.guessArray));
+          }
+
         if (this.currentFrame == 6) {
           this.gameOverStatus = true;
+          if (!this.$route.query.game) {
+          localStorage.setItem("gameOverStatus", JSON.stringify(this.gameOverStatus));
+          }
           return;
         }
         this.currentFrame++;
@@ -159,6 +177,14 @@ export default {
           "/" +
           this.currentFrame +
           ".png";
+
+          //don't do anything if we are in archive mode
+          if (!this.$route.query.game) {
+            localStorage.setItem("currentFrame", JSON.stringify(this.currentFrame));
+            localStorage.setItem("gameWonStatus", JSON.stringify(this.gameWonStatus));
+            localStorage.setItem("gameOverStatus", JSON.stringify(this.gameOverStatus));
+          } 
+
       }
     },
     changeFrame(event) {
@@ -225,6 +251,13 @@ export default {
         return "bg-gray-500";
       }
     },
+    getGameNumber(){
+      const baseDate = new Date("2022-10-26");
+      const currentDate = new Date();
+      const diffTime = Math.abs(currentDate - baseDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays
+    }
   },
 };
 </script>

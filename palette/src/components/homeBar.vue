@@ -59,51 +59,59 @@
   <modalDisplay
     id="Stats"
     v-if="ToggleModal1"
+    class="text-lg"
     @closeModal="this.ToggleModal1 = false"
   >
-  
+  Statistics coming soon
+  <img
+          class="rounded-lg mt-2"
+          src="@/assets/peepo.gif"
+          alt=""
+      />
   </modalDisplay>
   <modalDisplay
     id="Info"
     v-if="ToggleModal2"
     @closeModal="this.ToggleModal2 = false"
   >
-    <div class="flex justify-start pb-4 text-4xl font-bold">Instructions</div>
+
+    <div class="flex justify-start pb-4 text-lg font-bold sm:text-4xl">Instructions</div>
     <ul class="list-disc">
       <li>
-        <p class="pb-2 text-left text-2xl">
+        <p class="pb-2 text-left text-lg sm:text-2xl">
           Each image shows an individual shade, guess the palette which that
           shade belongs to
         </p>
       </li>
       <li>
-        <p class="pb-2 text-left text-2xl">
+        <p class="pb-2 text-left text-lg sm:text-2xl">
           Guessing wrong reveals the next shade in the palette
         </p>
       </li>
       <li>
-        <p class="pb-2 text-left text-2xl">
+        <p class="pb-2 text-left text-lg sm:text-2xl">
           If you can't answer, just press the submit button and the next image
           will be shown
         </p>
       </li>
     </ul>
 
-    <div class="flex justify-start pt-2 pb-4 text-4xl font-bold">Support</div>
-    <div class="flex flex-row justify-center items-center gap-1">
-      <div class="text-left text-2xl pb-4">
+    <div class="flex justify-start pt-2 pb-4 text-lg font-bold sm:text-4xl">Support</div>
+    <div class="flex flex-row justify-center items-center gap-1 sm:flex flex-col">
+      <div class="text-left text-lg pb-4 sm:text-2xl">
         Follow me on Twitter, and if you like the game, tweet about it!
       </div>
       <div class="flex justify-center h-fit">
         <a href="https://twitter.com"
           ><button
-            class="flex justify center p-4 rounded-xl w-fit text-white font-bold bg-blue-400 whitespace-nowrap"
+            class="flex justify center p-4 rounded-lg w-fit text-white font-bold bg-blue-400 whitespace-nowrap sm:text-xl"
           >
             Twitter 🐦
           </button></a
         >
       </div>
     </div>
+
   </modalDisplay>
 </template>
 
