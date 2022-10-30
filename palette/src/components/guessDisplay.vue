@@ -7,7 +7,7 @@
       <div 
         v-for="guessElement in guessArray"
         :key="guessElement"
-        class="flex justify-center py-3 my-1 w-full border-2 border-black rounded-lg text-black"
+        class="flex justify-center py-3 my-1 w-full border-2 border-purple-300 rounded-lg text-black"
         @click="guessClick(guessElement)"
       >
         {{ guessElement.guess }}

@@ -11,7 +11,7 @@
               v-for="index in currentGameNumber"
               :key="index"
               @click="this.$router.push('/?game=' + index)"
-              class="flex justify-center items-center p-12 rounded-lg bg-slate-500 text-white text-3xl font-semibold hover:bg-slate-600 cursor-pointer"
+              class="flex justify-center items-center p-12 rounded-lg bg-purple-300 text-black text-3xl font-semibold hover:bg-purple-400 cursor-pointer"
             >{{index}}</div>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default {
 
   },
   mounted() {
-    const baseDate = new Date("2022-10-10");
+    const baseDate = new Date("2022-10-10");  
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate - baseDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

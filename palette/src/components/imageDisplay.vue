@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4 p-4 flex justify-center bg-purple-300 rounded-lg">
+  <div class="m-4 p-4 flex justify-center bg-purple-200 rounded-lg">
     <div class="flex justify-center">
     <img class="rounded-xl" :src="this.imageURL" alt="Pallet Image" width="500" height="500">
     </div>

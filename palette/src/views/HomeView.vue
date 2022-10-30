@@ -14,7 +14,7 @@
         <guessDisplay :guessArray="this.guessArray"></guessDisplay>
       </div>
       <div v-if="this.gameOverStatus">
-        <div class="bg-fuchsia-200 rounded-lg m-4 p-2">
+        <div class="bg-purple-200 rounded-lg m-4 p-2">
           <div v-if="this.gameWonStatus" class="text-4xl text-green-500 pb-2">
             You won!
           </div>
@@ -33,7 +33,7 @@
           <div>
             <button
               @click="share()"
-              class="py-3 px-4 bg-green-500 rounded-lg text-white font-bold m-2 hover:bg-green-600 active:translate-y-1"
+              class="py-3 px-4 bg-purple-300 rounded-lg text-black font-bold m-2 hover:bg-purple-400 active:translate-y-1"
             >
               {{ this.shareButtonText }}
             </button>
@@ -123,7 +123,8 @@ export default {
         "http://localhost:22887/games/" + this.currentGameNumber + "/result.txt"
       );
       var gameData = response.data;
-      this.gameWinningGuess = gameData.winner;
+      //remove trailing spaces
+      this.gameWinningGuess = gameData.winner.trim();
       this.makeupURL = gameData.URL;
     } catch (error) {
       console.log(error);

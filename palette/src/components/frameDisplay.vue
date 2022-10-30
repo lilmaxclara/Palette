@@ -3,8 +3,8 @@
     <button 
       v-for="frame in frameNumber"
       :key="frame"
-      class="bg-fuchsia-500 sm:text-4xl rounded px-3 py-2 hover:bg-fuchsia-600"
-      :class="{'bg-blue-400': frame === activeFrame}"
+      class="bg-purple-300 text-2xl sm:text-4xl rounded px-3 py-2 hover:bg-purple-400"
+      :class="{'bg-purple-400': frame === activeFrame}"
       @click="frameClickHandler(frame)"
     >
       {{ frame }}

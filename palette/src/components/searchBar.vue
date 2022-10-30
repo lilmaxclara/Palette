@@ -16,7 +16,8 @@
         @keydown.enter="fireEvent"
       >
       </SimpleTypeahead>
-      <button @click="fireEvent" class="flex justify-center bg-green-400 rounded-r-lg px-8 py-4">Submit</button>
+      
+      <button @click="fireEvent" class="flex justify-center bg-purple-300 rounded-r-lg px-3 py-4 sm:px-8 font-bold hover:bg-purple-400">Submit</button>
     </div>
   </div>
 </template>
@@ -50,6 +51,7 @@ export default {
       this.selectedItem = item;
     },
     fireEvent(){
+      this.selectedItem = this.selectedItem.trim()
       this.$emit('newSelectedItem',this.selectedItem);
       this.$refs.refSimpleTypeahead.input = ""
       this.selectedItem = ""
