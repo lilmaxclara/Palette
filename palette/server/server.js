@@ -3,6 +3,7 @@ var cors = require("cors");
 var app = express();
 app.use(express.json());
 app.use(cors());
+
 // can be removed with nginx setup
 app.use(express.static("assets"));
 var fs = require("fs");

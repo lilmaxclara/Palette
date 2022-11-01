@@ -43,7 +43,7 @@ export default {
   },
   async mounted() {
     //use axios to get the searchList and convert to json to array
-    const response = await axios.get("http://localhost:22887/pallet/list");
+    const response = await axios.get("https://pallet.wtf/pallet/list");
     this.searchList = response.data;
   },
   methods: {
@@ -59,3 +59,19 @@ export default {
   }
 };
 </script>
+
+<style>
+
+@media only screen and (max-width: 600px) {
+
+  .simple-typeahead .simple-typeahead-list{
+  position: absolute ;
+  bottom: 56px ;
+}
+.simple-typeahead{
+  position: relative;
+}
+
+}
+
+</style>

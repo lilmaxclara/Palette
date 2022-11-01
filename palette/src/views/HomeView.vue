@@ -120,7 +120,7 @@ export default {
     //use axios to get the searchList and convert to json to array
     try {
       const response = await axios.get(
-        "http://localhost:22887/games/" + this.currentGameNumber + "/result.txt"
+        "https://palette.wtf/games/" + this.currentGameNumber + "/result.txt"
       );
       var gameData = response.data;
       //remove trailing spaces
@@ -131,7 +131,7 @@ export default {
       return;
     }
     this.currentImageURL =
-      "http://localhost:22887/games/" +
+      "https://palette.wtf/games/" +
       this.currentGameNumber +
       "/" +
       this.currentFrame +
@@ -173,7 +173,7 @@ export default {
         }
         this.currentFrame++;
         this.currentImageURL =
-          "http://localhost:22887/games/" +
+          "https://palette.wtf/games/" +
           this.currentGameNumber +
           "/" +
           this.currentFrame +
@@ -191,7 +191,7 @@ export default {
     changeFrame(event) {
       console.log(event);
       this.currentImageURL =
-        "http://localhost:22887/games/" +
+        "https://palette.wtf/games/" +
         this.currentGameNumber +
         "/" +
         event +
@@ -253,7 +253,7 @@ export default {
       }
     },
     getGameNumber(){
-      const baseDate = new Date("2022-10-26");
+      const baseDate = new Date("2022-11-01");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
