@@ -5,6 +5,8 @@
         ><img
           class="rounded-md hover:cursor-pointer"
           src="@/assets/PaletteLogo.webp"
+          width="152"
+          height="60"
           alt=""
       /></a>
     </div>
@@ -66,6 +68,8 @@
   <img
           class="rounded-lg mt-2"
           src="@/assets/peepo.gif"
+          width="498"
+          height="424"
           alt=""
       />
   </modalDisplay>
