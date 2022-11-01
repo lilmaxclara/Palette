@@ -43,7 +43,7 @@ export default {
   },
   async mounted() {
     //use axios to get the searchList and convert to json to array
-    const response = await axios.get("https://pallet.wtf/pallet/list");
+    const response = await axios.get("https://palette.wtf/palette/list");
     this.searchList = response.data;
   },
   methods: {

@@ -10,7 +10,7 @@ var fs = require("fs");
 
 makeupListArray = [];
 
-app.use("/pallet/list", async (req, res) => {
+app.use("/palette/list", async (req, res) => {
   await fs.readFile(
     __dirname + "/assets/makeupList.txt",
     async function (err, data) {
