@@ -10,7 +10,7 @@
   export default {
     name: "imageDisplay",
     props: {
-      imageURL: Number,
+      imageURL: String,
     },
   };
   </script>

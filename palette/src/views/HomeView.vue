@@ -20,7 +20,7 @@
           </div>
           <div v-else class="text-4xl text-red-500 pb-2">You lost</div>
           <div class="text-3xl p-2">
-            <a :href="this.makeupURL">{{ this.gameWinningGuess }}</a>
+            <a :href="this.makeupURL" target="_blank">{{ this.gameWinningGuess }}</a>
           </div>
           <div class="flex flex-row justify-center gap-2 py-2">
             <div
@@ -37,6 +37,9 @@
             >
               {{ this.shareButtonText }}
             </button>
+            <a :href="this.makeupURL" target="_blank">
+              <button class="py-3 px-4 bg-green-300 rounded-lg text-black font-bold m-2 hover:bg-green-400">BUY</button>
+            </a>
           </div>
           <div>
             <button
@@ -135,7 +138,9 @@ export default {
       this.currentGameNumber +
       "/" +
       this.currentFrame +
-      ".png";
+      ".webp";
+
+    this.cacheImages(this.currentGameNumber)
   },
 
   methods: {
@@ -177,7 +182,7 @@ export default {
           this.currentGameNumber +
           "/" +
           this.currentFrame +
-          ".png";
+          ".webp";
 
           //don't do anything if we are in archive mode
           if (!this.$route.query.game) {
@@ -195,7 +200,7 @@ export default {
         this.currentGameNumber +
         "/" +
         event +
-        ".png";
+        ".webp";
     },
     share() {
       this.shareButtonText = "COPIED"
@@ -253,11 +258,23 @@ export default {
       }
     },
     getGameNumber(){
-      const baseDate = new Date("2022-11-01");
+      const baseDate = new Date("2022-11-02");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return diffDays
+    },
+    cacheImages(currentGameNumber){
+      //preloads images so transition between frames is instant
+      for (var i = 1; i < 7; i++) {
+        var img = new Image();
+        img.src =
+          "https://palette.wtf/games/" +
+          currentGameNumber +
+          "/" +
+          i +
+          ".webp";
+      }
     }
   },
 };
