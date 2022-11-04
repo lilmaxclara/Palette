@@ -20,7 +20,9 @@
           </div>
           <div v-else class="text-4xl text-red-500 pb-2">You lost</div>
           <div class="text-3xl p-2">
-            <a :href="this.makeupURL" target="_blank">{{ this.gameWinningGuess }}</a>
+            <a :href="this.makeupURL" target="_blank">{{
+              this.gameWinningGuess
+            }}</a>
           </div>
           <div class="flex flex-row justify-center gap-2 py-2">
             <div
@@ -38,7 +40,11 @@
               {{ this.shareButtonText }}
             </button>
             <a :href="this.makeupURL" target="_blank">
-              <button class="py-3 px-4 bg-green-300 rounded-lg text-black font-bold m-2 hover:bg-green-400">BUY</button>
+              <button
+                class="py-3 px-4 bg-green-300 rounded-lg text-black font-bold m-2 hover:bg-green-400"
+              >
+                BUY
+              </button>
             </a>
           </div>
           <div>
@@ -105,19 +111,28 @@ export default {
   async mounted() {
     //calculate current game by taking a base date and adding the number of days since that date
     //this will be used to calculate the current game
-    if (!this.$route.query.game && localStorage.getItem("currentFrame") && this.getGameNumber() == JSON.parse(localStorage.getItem("lastGameNumber"))) {
-        //load values from localStorage     
-        this.currentFrame = JSON.parse(localStorage.getItem("currentFrame"));
-        this.guessArray = JSON.parse(localStorage.getItem("guessArray"));
-        this.gameOverStatus = JSON.parse(localStorage.getItem("gameOverStatus"));
-        this.gameWonStatus = JSON.parse(localStorage.getItem("gameWonStatus"));
-      }
-    
+
     if (this.$route.query.game) {
+      //dont do anything with local storage if we are in game mode
+      console.log("Game Mode detected")
       this.currentGameNumber = this.$route.query.game;
+    } else if (
+      localStorage.getItem("currentFrame") &&
+      this.getGameNumber() == JSON.parse(localStorage.getItem("lastGameNumber"))
+    ) {
+      //if we aren't in game mode, and see we are still on the previous game, load the previous game
+      console.log("Loading previous game")
+      this.currentGameNumber = JSON.parse(localStorage.getItem("lastGameNumber"));
+      this.currentFrame = JSON.parse(localStorage.getItem("currentFrame"));
+      this.guessArray = JSON.parse(localStorage.getItem("guessArray"));
+      this.gameOverStatus = JSON.parse(localStorage.getItem("gameOverStatus"));
+      this.gameWonStatus = JSON.parse(localStorage.getItem("gameWonStatus"));
     } else {
-      this.currentGameNumber = this.getGameNumber()
-      localStorage.setItem("lastGameNumber", JSON.stringify(this.currentGameNumber));
+      //if we aren't in game mode, there is no local storage or we arent on the current game number then load the new game
+      console.log("Loading new game")
+      localStorage.clear(); 
+      this.currentGameNumber = this.getGameNumber();
+      localStorage.setItem("lastGameNumber",JSON.stringify(this.currentGameNumber));
     }
 
     //use axios to get the searchList and convert to json to array
@@ -140,7 +155,7 @@ export default {
       this.currentFrame +
       ".webp";
 
-    this.cacheImages(this.currentGameNumber)
+    this.cacheImages(this.currentGameNumber);
   },
 
   methods: {
@@ -154,10 +169,16 @@ export default {
         this.guessArray.push({ guessResult: true, guess: "✔️ " + event });
         this.guessArray.length = 6;
         if (!this.$route.query.game) {
-            localStorage.setItem("gameWonStatus", JSON.stringify(this.gameWonStatus));
-            localStorage.setItem("gameOverStatus", JSON.stringify(this.gameOverStatus));
-            localStorage.setItem("guessArray", JSON.stringify(this.guessArray));
-          } 
+          localStorage.setItem(
+            "gameWonStatus",
+            JSON.stringify(this.gameWonStatus)
+          );
+          localStorage.setItem(
+            "gameOverStatus",
+            JSON.stringify(this.gameOverStatus)
+          );
+          localStorage.setItem("guessArray", JSON.stringify(this.guessArray));
+        }
       } else {
         if (event == "") {
           this.guessArray.push({ guessResult: false, guess: "❌ Skipped" });
@@ -167,12 +188,15 @@ export default {
 
         if (!this.$route.query.game) {
           localStorage.setItem("guessArray", JSON.stringify(this.guessArray));
-          }
+        }
 
         if (this.currentFrame == 6) {
           this.gameOverStatus = true;
           if (!this.$route.query.game) {
-          localStorage.setItem("gameOverStatus", JSON.stringify(this.gameOverStatus));
+            localStorage.setItem(
+              "gameOverStatus",
+              JSON.stringify(this.gameOverStatus)
+            );
           }
           return;
         }
@@ -184,17 +208,24 @@ export default {
           this.currentFrame +
           ".webp";
 
-          //don't do anything if we are in archive mode
-          if (!this.$route.query.game) {
-            localStorage.setItem("currentFrame", JSON.stringify(this.currentFrame));
-            localStorage.setItem("gameWonStatus", JSON.stringify(this.gameWonStatus));
-            localStorage.setItem("gameOverStatus", JSON.stringify(this.gameOverStatus));
-          } 
-
+        //don't do anything if we are in archive mode
+        if (!this.$route.query.game) {
+          localStorage.setItem(
+            "currentFrame",
+            JSON.stringify(this.currentFrame)
+          );
+          localStorage.setItem(
+            "gameWonStatus",
+            JSON.stringify(this.gameWonStatus)
+          );
+          localStorage.setItem(
+            "gameOverStatus",
+            JSON.stringify(this.gameOverStatus)
+          );
+        }
       }
     },
     changeFrame(event) {
-      console.log(event);
       this.currentImageURL =
         "https://palette.wtf/games/" +
         this.currentGameNumber +
@@ -203,7 +234,7 @@ export default {
         ".webp";
     },
     share() {
-      this.shareButtonText = "COPIED"
+      this.shareButtonText = "COPIED";
       var shareString = "";
       for (var i = 0; i < this.guessArray.length; i++) {
         try {
@@ -257,25 +288,21 @@ export default {
         return "bg-gray-500";
       }
     },
-    getGameNumber(){
-      const baseDate = new Date("2022-11-02");
+    getGameNumber() {
+      const baseDate = new Date("November 4, 2022 00:00:00");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
     },
-    cacheImages(currentGameNumber){
+    cacheImages(currentGameNumber) {
       //preloads images so transition between frames is instant
       for (var i = 1; i < 7; i++) {
         var img = new Image();
         img.src =
-          "https://palette.wtf/games/" +
-          currentGameNumber +
-          "/" +
-          i +
-          ".webp";
+          "https://palette.wtf/games/" + currentGameNumber + "/" + i + ".webp";
       }
-    }
+    },
   },
 };
 </script>
