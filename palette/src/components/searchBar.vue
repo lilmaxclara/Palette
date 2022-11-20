@@ -11,15 +11,22 @@
         :itemProjection="itemProjectionFunction"
         @selectItem="selectItemEventHandler"
         @onInput="onInputEventHandler"
+        @compositionupdate="compositionUpdate($event)"
         @onFocus="onFocusEventHandler"
         @onBlur="onBlurEventHandler"
         @keydown.enter="fireEvent"
       >
       </SimpleTypeahead>
-      
-      <button @click="fireEvent" class="flex justify-center bg-purple-300 rounded-r-lg px-3 py-4 sm:px-8 font-bold hover:bg-purple-400">Submit</button>
+
+      <button
+        @click="fireEvent"
+        class="flex justify-center bg-purple-300 rounded-r-lg px-3 py-4 sm:px-8 font-bold hover:bg-purple-400"
+      >
+        Submit
+      </button>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -32,14 +39,14 @@ export default {
   data() {
     return {
       searchList: [],
-      selectedItem: ""
+      selectedItem: "",
     };
   },
   props: {
     msg: String,
   },
   components: {
-    SimpleTypeahead,
+    SimpleTypeahead
   },
   async mounted() {
     //use axios to get the searchList and convert to json to array
@@ -49,29 +56,33 @@ export default {
   methods: {
     selectItemEventHandler(item) {
       this.selectedItem = item;
+      this.$refs.refSimpleTypeahead.input = item;
     },
-    fireEvent(){
-      this.selectedItem = this.selectedItem.trim()
-      this.$emit('newSelectedItem',this.selectedItem);
-      this.$refs.refSimpleTypeahead.input = ""
-      this.selectedItem = ""
-    }
-  }
+    compositionUpdate(event) {
+      this.$refs.refSimpleTypeahead.input = event.data
+    },
+    fireEvent() {
+      this.selectedItem = this.selectedItem.trim();
+      this.$emit("newSelectedItem", this.selectedItem);
+      this.$refs.refSimpleTypeahead.input = "";
+      this.selectedItem = "";
+    },
+  },
 };
 </script>
 
 <style>
+.simple-typeahead .simple-typeahead-list {
+  max-height: 200px !important;
+}
 
 @media only screen and (max-width: 600px) {
-
-  .simple-typeahead .simple-typeahead-list{
-  position: absolute ;
-  bottom: 56px ;
+  .simple-typeahead .simple-typeahead-list {
+    position: absolute;
+    bottom: 56px;
+  }
+  .simple-typeahead {
+    position: relative;
+  }
 }
-.simple-typeahead{
-  position: relative;
-}
-
-}
-
 </style>
