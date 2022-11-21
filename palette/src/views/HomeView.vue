@@ -5,12 +5,12 @@
       <imageDisplay :imageURL="this.currentImageURL"></imageDisplay>
       <frameDisplay
         @frameClick="changeFrame($event)"
-        :frameNumber="this.currentFrame"
+        :frameNumber="this.currentFrame" :gameWonStatus=this.gameWonStatus
       ></frameDisplay>
       <div v-if="!this.gameOverStatus">
         <searchBar @newSelectedItem="checkGuess($event)"></searchBar>
       </div>
-      <div v-if="!this.gameOverStatus || this.showGuess">
+      <div v-if="this.gameOverStatus & this.showGuess">
         <guessDisplay :guessArray="this.guessArray"></guessDisplay>
       </div>
       <div v-if="this.gameOverStatus">
@@ -47,7 +47,7 @@
               </button>
             </a>
           </div>
-          <div>
+          <div v-if="this.currentFrame > 1">
             <button
               @click="this.showGuess = !this.showGuess"
               class="underline m-2"
@@ -114,25 +114,30 @@ export default {
 
     if (this.$route.query.game) {
       //dont do anything with local storage if we are in game mode
-      console.log("Game Mode detected")
+      console.log("Game Mode detected");
       this.currentGameNumber = this.$route.query.game;
     } else if (
       localStorage.getItem("currentFrame") &&
       this.getGameNumber() == JSON.parse(localStorage.getItem("lastGameNumber"))
     ) {
       //if we aren't in game mode, and see we are still on the previous game, load the previous game
-      console.log("Loading previous game")
-      this.currentGameNumber = JSON.parse(localStorage.getItem("lastGameNumber"));
+      console.log("Loading previous game");
+      this.currentGameNumber = JSON.parse(
+        localStorage.getItem("lastGameNumber")
+      );
       this.currentFrame = JSON.parse(localStorage.getItem("currentFrame"));
       this.guessArray = JSON.parse(localStorage.getItem("guessArray"));
       this.gameOverStatus = JSON.parse(localStorage.getItem("gameOverStatus"));
       this.gameWonStatus = JSON.parse(localStorage.getItem("gameWonStatus"));
     } else {
       //if we aren't in game mode, there is no local storage or we arent on the current game number then load the new game
-      console.log("Loading new game")
-      localStorage.clear(); 
+      console.log("Loading new game");
+      localStorage.clear();
       this.currentGameNumber = this.getGameNumber();
-      localStorage.setItem("lastGameNumber",JSON.stringify(this.currentGameNumber));
+      localStorage.setItem(
+        "lastGameNumber",
+        JSON.stringify(this.currentGameNumber)
+      );
     }
 
     //use axios to get the searchList and convert to json to array
