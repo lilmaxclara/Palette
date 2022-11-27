@@ -106,7 +106,7 @@
         Follow me on Twitter, and if you like the game, tweet about it!
       </div>
       <div class="flex justify-center h-fit">
-        <a href="https://twitter.com"
+        <a href="https://twitter.com/lilmaxclara"
           ><button
             class="flex justify center p-4 rounded-lg w-fit text-white font-bold bg-blue-400 whitespace-nowrap sm:text-xl"
           >
