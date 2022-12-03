@@ -1,14 +1,13 @@
 <template>
   <div
-    v-if="guessArray.length"
+    v-if="(guessArray.length && !checkFirstGuessWin())"
     class="flex-col justify-center mx-4 text-black"
   >
     <div class="flex flex-col justify-center">
       <div 
-        v-for="guessElement in guessArrayFilter"
+        v-for="guessElement in guessArray"
         :key="guessElement"
         class="flex justify-center py-3 my-1 w-full border-2 border-purple-300 rounded-lg text-black"
-        @click="guessClick(guessElement)"
       >
       {{ guessElement.guess}}
       </div>
@@ -21,11 +20,19 @@ export default {
   name: "guessDisplay",
   data() {
     return {
-      guessArrayFilter: this.guessArray.filter((element) => element),
+
     };
   },
   props: {
     guessArray: Array,
+    gameWonStatus: Boolean,
+  },
+  methods: {
+    checkFirstGuessWin(){
+      if (this.guessArray.length === 1 && this.gameWonStatus) {
+        return true
+      }
+    }
   },
 };
 </script>

@@ -10,8 +10,8 @@
       <div v-if="!this.gameOverStatus">
         <searchBar @newSelectedItem="checkGuess($event)"></searchBar>
       </div>
-      <div v-if="this.gameOverStatus & this.showGuess">
-        <guessDisplay :guessArray="this.guessArray"></guessDisplay>
+      <div v-if="this.guessArray && this.showGuess">
+        <guessDisplay :gameWonStatus="this.gameWonStatus" :guessArray="this.guessArray.filter((element) => element)"></guessDisplay>
       </div>
       <div v-if="this.gameOverStatus">
         <div class="bg-purple-200 rounded-lg m-4 p-2">
@@ -93,7 +93,7 @@ export default {
       currentFrame: 1,
       makeupURL: "",
       shareButtonText: "SHARE",
-      showGuess: false,
+      showGuess: true,
       guessArray: [],
       gameWinningGuess: "",
       gameOverStatus: false,
@@ -117,7 +117,7 @@ export default {
       console.log("Game Mode detected");
       this.currentGameNumber = this.$route.query.game;
     } else if (
-      localStorage.getItem("currentFrame") &&
+      JSON.parse(localStorage.getItem("currentFrame")) &&
       this.getGameNumber() == JSON.parse(localStorage.getItem("lastGameNumber"))
     ) {
       //if we aren't in game mode, and see we are still on the previous game, load the previous game
@@ -134,10 +134,8 @@ export default {
       console.log("Loading new game");
       localStorage.clear();
       this.currentGameNumber = this.getGameNumber();
-      localStorage.setItem(
-        "lastGameNumber",
-        JSON.stringify(this.currentGameNumber)
-      );
+      localStorage.setItem("currentFrame", JSON.stringify(this.currentFrame));
+      localStorage.setItem("lastGameNumber",JSON.stringify(this.currentGameNumber));
     }
 
     //use axios to get the searchList and convert to json to array
@@ -294,7 +292,7 @@ export default {
       }
     },
     getGameNumber() {
-      const baseDate = new Date("November 27, 2022 00:00:00");
+      const baseDate = new Date("November 30, 2022 00:00:00");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
