@@ -292,7 +292,7 @@ export default {
       }
     },
     getGameNumber() {
-      const baseDate = new Date("November 30, 2022 00:00:00");
+      const baseDate = new Date("November 27, 2022 00:00:00");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
