@@ -126,7 +126,7 @@ export default {
         localStorage.getItem("lastGameNumber")
       );
       this.currentFrame = JSON.parse(localStorage.getItem("currentFrame"));
-      this.guessArray = JSON.parse(localStorage.getItem("guessArray"));
+      this.guessArray = JSON.parse(localStorage.getItem("guessArray")) || [];
       this.gameOverStatus = JSON.parse(localStorage.getItem("gameOverStatus"));
       this.gameWonStatus = JSON.parse(localStorage.getItem("gameWonStatus"));
     } else {
@@ -164,9 +164,10 @@ export default {
   methods: {
     checkGuess(event) {
       // update localStorage
-
       this.selectedItem = event;
-      if (this.selectedItem == this.gameWinningGuess) {
+      try {
+
+        if (this.selectedItem == this.gameWinningGuess) {
         this.gameWonStatus = true;
         this.gameOverStatus = true;
         this.guessArray.push({ guessResult: true, guess: "✔️ " + event });
@@ -226,6 +227,10 @@ export default {
             JSON.stringify(this.gameOverStatus)
           );
         }
+      }
+        
+      } catch (error) {
+        console.log(error);
       }
     },
     changeFrame(event) {
@@ -292,7 +297,7 @@ export default {
       }
     },
     getGameNumber() {
-      const baseDate = new Date("November 27, 2022 00:00:00");
+      const baseDate = new Date("December 16, 2022 00:00:00");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
