@@ -40,7 +40,7 @@ export default {
 
   },
   mounted() {
-      const baseDate = new Date("December 16, 2022 00:00:00");
+      const baseDate = new Date("January 19, 2023 00:00:00");
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate - baseDate);
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
